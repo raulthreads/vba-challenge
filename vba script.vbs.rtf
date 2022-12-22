@@ -1,0 +1,112 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2706
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fnil\fcharset0 Menlo-Regular;\f1\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;\red0\green0\blue0;\red255\green255\blue255;\red0\green0\blue0;
+}
+{\*\expandedcolortbl;;\csgenericrgb\c0\c0\c0\c85000;\csgenericrgb\c100000\c100000\c100000;\csgenericrgb\c0\c0\c0\c70000;
+}
+\margl1440\margr1440\vieww15720\viewh15440\viewkind0
+\deftab593
+\pard\tx593\pardeftab593\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf2 \cb3 Sub aplhabet()\
+\cf4     \cf2 \
+\cf4     For Each ws In Worksheets\cf2 \
+\cf4     \cf2 \
+\
+\cf4     Dim tickerclose, tickeropen As Double\cf2 \
+\cf4     Dim greatestincrease, greatestdecrease, greatestvolume As Double\cf2 \
+\cf4     Dim greatestincreaseticker, greatestdecreaseticker, greatestvolumeticker As String\cf2 \
+\cf4     \cf2 \
+\cf4     \cf2 \
+\cf4     'Titles\cf2 \
+\cf4     ws.Range("I1").Value = "Ticker"\cf2 \
+\cf4     ws.Range("J1").Value = "Yearly Change"\cf2 \
+\cf4     ws.Range("K1").Value = "Percent Change"\cf2 \
+\cf4     ws.Range("L1").Value = "Total Stock Volume"\cf2 \
+\cf4     ws.Range("P1").Value = "Ticker"\cf2 \
+\cf4     ws.Range("Q1").Value = "Value"\cf2 \
+\cf4     ws.Range("O2").Value = "Greatest % Increase"\cf2 \
+\cf4     ws.Range("O3").Value = "Greatest % decrease"\cf2 \
+\cf4     ws.Range("O4").Value = "Greatest Total Volume"\cf2 \
+\cf4     \cf2 \
+\cf4     \cf2 \
+\cf4     \cf2 \
+\cf4     \cf2 \
+\cf4     Total = 0\cf2 \
+\cf4     ipointer = 2\cf2 \
+\cf4     greatestincrease = 0\cf2 \
+\cf4     greatestdecrease = 0\cf2 \
+\cf4     greatestvolume = 0\cf2 \
+\cf4    'tickeropen = Cells(2, "C").Value\cf2 \
+\cf4     \cf2 \
+\cf4     \cf2 \
+\cf4     'Row Count\cf2 \
+\cf4     RowCount = Cells(Rows.Count, "A").End(xlUp).Row\cf2 \
+\cf4     \cf2 \
+\cf4     For i = 2 To RowCount\cf2 \
+\cf4         If ws.Cells(i + 1, "A").Value <> ws.Cells(i, "A").Value Then\cf2 \
+\cf4             Total = Total + ws.Cells(i, "G").Value\cf2 \
+\cf4             ws.Cells(ipointer, "I").Value = ws.Cells(i, "A").Value\cf2 \
+\cf4             ws.Cells(ipointer, "L").Value = Total\cf2 \
+\cf4             tickerclose = ws.Cells(i, "F").Value\cf2 \
+\cf4             ws.Cells(ipointer, "J").Value = tickerclose - tickeropen\cf2 \
+\cf4         If ws.Cells(ipointer, "J").Value > 0 Then\cf2 \
+\cf4         \cf2 \
+\cf4             ws.Cells(ipointer, "J").Interior.ColorIndex = 4\cf2 \
+\cf4         Else\cf2 \
+\cf4             ws.Cells(ipointer, "J").Interior.ColorIndex = 3\cf2 \
+\cf4         End If\cf2 \
+\cf4         \cf2 \
+\cf4         \cf2 \
+\cf4         If tickeropen <> 0 Then\cf2 \
+\cf4             ws.Cells(ipointer, "K").Value = FormatPercent((ws.Cells(ipointer, "J").Value / tickeropen), 2)\cf2 \
+\cf4             \cf2 \
+\cf4         Else\cf2 \
+\cf4              ws.Cells(ipointer, "K").Value = Null\cf2 \
+\cf4         \cf2 \
+\cf4         End If\cf2 \
+\cf4         If ws.Cells(ipointer, "K").Value > greatestincrease Then\cf2 \
+\cf4             greatestincreaseticker = ws.Cells(ipointer, "I").Value\cf2 \
+\cf4             greatestincrease = ws.Cells(ipointer, "K").Value\cf2 \
+\cf4         End If\cf2 \
+\cf4          If ws.Cells(ipointer, "K").Value < greatestdecrease Then\cf2 \
+\cf4             greatestdecreaseticker = ws.Cells(ipointer, "I").Value\cf2 \
+\cf4             greatestdecrease = ws.Cells(ipointer, "K").Value\cf2 \
+\cf4         End If\cf2 \
+\cf4         If ws.Cells(ipointer, "L").Value > greatestvolume Then\cf2 \
+\cf4             greatestvolumeticker = ws.Cells(ipointer, "I").Value\cf2 \
+\cf4             greatestvolume = ws.Cells(ipointer, "L").Value\cf2 \
+\cf4         End If\cf2 \
+\cf4         \cf2 \
+\cf4             ipointer = ipointer + 1\cf2 \
+\cf4             Total = 0\cf2 \
+\cf4             \cf2 \
+\cf4             cpointer = i + 1\cf2 \
+\cf4             \cf2 \
+\cf4         Else\cf2 \
+\cf4             Total = Total + Cells(i, "G").Value\cf2 \
+\cf4             \cf2 \
+\cf4             \cf2 \
+\
+\cf4         End If\cf2 \
+\cf4              If ws.Cells(i - 1, "A").Value <> ws.Cells(i, "A").Value Then\cf2 \
+\cf4                 tickeropen = ws.Cells(i, "C").Value\cf2 \
+\cf4         \cf2 \
+\cf4         End If\cf2 \
+\cf4         \cf2 \
+\cf4             \cf2 \
+\cf4     Next i\cf2 \
+\cf4         ws.Cells(2, "P").Value = greatestincreaseticker\cf2 \
+\cf4         ws.Cells(2, "Q").Value = FormatPercent(greatestincrease, 2)\cf2 \
+\cf4         ws.Cells(3, "P").Value = greatestdecreaseticker\cf2 \
+\cf4         ws.Cells(3, "Q").Value = FormatPercent(greatestdecrease, 2)\cf2 \
+\cf4         ws.Cells(4, "P").Value = greatestvolumeticker\cf2 \
+\cf4         ws.Cells(4, "Q").Value = greatestvolume\cf2 \
+\cf4     \cf2 \
+\cf4     Next ws\cf2 \
+End Sub\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f1 \cf0 \cb1 \
+\
+}

@@ -78,4 +78,101 @@ After saving your work, create a shareable link and submit the link to <https://
 
 © 2022 Trilogy Education Services, a 2U, Inc. brand. All Rights Reserved.
 
+HWK DONE
+Sub aplhabet()
+    
+    For Each ws In Worksheets
+    
 
+    Dim tickerclose, tickeropen As Double
+    Dim greatestincrease, greatestdecrease, greatestvolume As Double
+    Dim greatestincreaseticker, greatestdecreaseticker, greatestvolumeticker As String
+    
+    
+    'Titles
+    ws.Range("I1").Value = "Ticker"
+    ws.Range("J1").Value = "Yearly Change"
+    ws.Range("K1").Value = "Percent Change"
+    ws.Range("L1").Value = "Total Stock Volume"
+    ws.Range("P1").Value = "Ticker"
+    ws.Range("Q1").Value = "Value"
+    ws.Range("O2").Value = "Greatest % Increase"
+    ws.Range("O3").Value = "Greatest % decrease"
+    ws.Range("O4").Value = "Greatest Total Volume"
+    
+    
+    
+    
+    Total = 0
+    ipointer = 2
+    greatestincrease = 0
+    greatestdecrease = 0
+    greatestvolume = 0
+   'tickeropen = Cells(2, "C").Value
+    
+    
+    'Row Count
+    RowCount = Cells(Rows.Count, "A").End(xlUp).Row
+    
+    For i = 2 To RowCount
+        If ws.Cells(i + 1, "A").Value <> ws.Cells(i, "A").Value Then
+            Total = Total + ws.Cells(i, "G").Value
+            ws.Cells(ipointer, "I").Value = ws.Cells(i, "A").Value
+            ws.Cells(ipointer, "L").Value = Total
+            tickerclose = ws.Cells(i, "F").Value
+            ws.Cells(ipointer, "J").Value = tickerclose - tickeropen
+        If ws.Cells(ipointer, "J").Value > 0 Then
+        
+            ws.Cells(ipointer, "J").Interior.ColorIndex = 4
+        Else
+            ws.Cells(ipointer, "J").Interior.ColorIndex = 3
+        End If
+        
+        
+        If tickeropen <> 0 Then
+            ws.Cells(ipointer, "K").Value = FormatPercent((ws.Cells(ipointer, "J").Value / tickeropen), 2)
+            
+        Else
+             ws.Cells(ipointer, "K").Value = Null
+        
+        End If
+        If ws.Cells(ipointer, "K").Value > greatestincrease Then
+            greatestincreaseticker = ws.Cells(ipointer, "I").Value
+            greatestincrease = ws.Cells(ipointer, "K").Value
+        End If
+         If ws.Cells(ipointer, "K").Value < greatestdecrease Then
+            greatestdecreaseticker = ws.Cells(ipointer, "I").Value
+            greatestdecrease = ws.Cells(ipointer, "K").Value
+        End If
+        If ws.Cells(ipointer, "L").Value > greatestvolume Then
+            greatestvolumeticker = ws.Cells(ipointer, "I").Value
+            greatestvolume = ws.Cells(ipointer, "L").Value
+        End If
+        
+            ipointer = ipointer + 1
+            Total = 0
+            
+            cpointer = i + 1
+            
+        Else
+            Total = Total + Cells(i, "G").Value
+            
+            
+
+        End If
+             If ws.Cells(i - 1, "A").Value <> ws.Cells(i, "A").Value Then
+                tickeropen = ws.Cells(i, "C").Value
+        
+        End If
+        
+            
+    Next i
+        ws.Cells(2, "P").Value = greatestincreaseticker
+        ws.Cells(2, "Q").Value = FormatPercent(greatestincrease, 2)
+        ws.Cells(3, "P").Value = greatestdecreaseticker
+        ws.Cells(3, "Q").Value = FormatPercent(greatestdecrease, 2)
+        ws.Cells(4, "P").Value = greatestvolumeticker
+        ws.Cells(4, "Q").Value = greatestvolume
+    
+    Next ws
+End Sub
